@@ -79,7 +79,10 @@ After filling missing values estimations of mean and median for total steps per 
 
 activity_fill[,weekend:=ifelse(date %>% strftime("%w") %in% c(0,6),"weekend","weekday") 
                         %>% factor]
-ggplot(data=activity_fill,aes(x=interval,y=mean_steps) ) + geom_line() +
+
+activityPerIntervalWknd=activity_fill[,.("mean_steps"=mean(steps,na.rm = T)),by=.(weekend,interval)]
+
+ggplot(data=activityPerIntervalWknd,aes(x=interval,y=mean_steps) ) + geom_line() +
   facet_grid(weekend~.)
 ```
 
